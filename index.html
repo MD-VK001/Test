@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mycology Filter App</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="FA/css/all.min.css">
+<style>
+    /* This inline style block is for demonstration. It's better to move this to style.css */
+    :root {
+        /* Color Variables */
+        --primary-light: #1d776c;
+        --primary-dark: #1a2a6c;
+        --text-light: #18222c;
+        --text-dark: #e0f7fa;
+        --bg-light: linear-gradient(135deg, #a7d2e8, #c2e6f4, #d6eaf8);
+        --bg-dark: linear-gradient(135deg, #1a2a6c, #2c3e50, #4a569d);
+        --card-bg-light: rgba(255, 255, 255, 0.95);
+        --card-bg-dark: rgba(10, 35, 47, 0.9);
+        --header-bg-light: rgba(220, 240, 245, 0.9);
+        --header-bg-dark: rgba(13, 43, 56, 0.6);
+        --border-light: #2a9d8f;
+        --border-dark: #4db6ac;
+        --sun-color: #ffeb3b;
+        --moon-color: #e0f7fa;
+        
+        /* Icon Filters */
+        --icon-filter-dark: invert(90%) sepia(10%) saturate(500%) hue-rotate(130deg) brightness(95%) contrast(95%);
+        --icon-filter-light: invert(15%) sepia(10%) saturate(1000%) hue-rotate(170deg) brightness(90%) contrast(90%);
+    }
+
+    .icon {
+        width: 16px;
+        height: 16px;
+        display: inline-block;
+        vertical-align: middle;
+        transition: filter 0.3s ease;
+        filter: var(--icon-filter-light);
+    }
+
+    body.light-mode .icon {
+        filter: var(--icon-filter-light);
+    }
+
+    body:not(.light-mode) .icon {
+        filter: var(--icon-filter-dark);
+    }
+
+    .slider-icons img[alt="Light mode"] {
+        filter: invert(82%) sepia(91%) saturate(1352%) hue-rotate(358deg) brightness(105%) contrast(102%);
+    }
+
+    .slider-icons img[alt="Dark mode"] {
+        filter: invert(98%) sepia(7%) saturate(1750%) hue-rotate(155deg) brightness(95%) contrast(89%);
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><img src="FA/svg/mushroom.svg" class="header-icon icon" alt="Fungus"> Mycology Guide</h1>
+            <p class="subtitle">Filter and explore different fungi based on their characteristics</p>
+        </header>
+
+        <div class="theme-switch-container">
+            <span class="theme-label">Theme</span>
+            <label class="theme-switch">
+                <input type="checkbox" id="theme-checkbox">
+                <span class="slider"></span>
+                <div class="slider-icons">
+                    <img src="FA/svg/sun.svg" class="icon" alt="Light mode">
+                    <img src="FA/svg/moon.svg" class="icon" alt="Dark mode">
+                </div>
+            </label>
+        </div>
+
+        <div id="search-container" class="search-container">
+            <img src="FA/svg/search.svg" class="icon" alt="Search">
+            <input type="text" id="search-input" placeholder="Search fungi, morphology, or diseases...">
+            <div id="search-suggestions"></div>
+        </div>
+
+        <div class="category-buttons-container">
+            <h2 class="filter-title"><img src="FA/svg/filter.svg" class="filter-title-icon icon" alt="Filter"> Fungal Classification</h2>
+            <div class="category-buttons" id="primary-filter-container">
+                <div class="category-btn active" data-classification="all">
+                    <img src="FA/svg/globe.svg" class="icon" alt="All"> All Fungi
+                </div>
+                <div class="category-btn btn-systemic" data-classification="Systemic">
+                    <img src="FA/svg/location-dot.svg" class="icon" alt="Systemic"> Systemic
+                </div>
+                <div class="category-btn btn-cutaneous" data-classification="Cutaneous">
+                    <img src="FA/svg/paint-roller.svg" class="icon" alt="Cutaneous"> Cutaneous
+                </div>
+                <div class="category-btn btn-opportunistic" data-classification="Opportunistic">
+                    <img src="FA/svg/head-side-virus.svg" class="icon" alt="Opportunistic"> Opportunistic
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <h2 class="filter-title"><img src="FA/svg/sliders-h.svg" class="filter-title-icon icon" alt="Filters"> Filter Options</h2>
+            
+            <div class="filter-group">
+                <h3><img src="FA/svg/shapes.svg" class="filter-title-icon icon" alt="Morphology"> Morphology</h3>
+                <div class="tag-container" id="morphology-tags">
+                    <!-- Morphology tags will be generated here -->
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <h3><img src="FA/svg/lungs.svg" class="filter-title-icon icon" alt="Affected Systems"> Affected Systems</h3>
+                <div class="tag-container" id="affected-systems-tags">
+                    <!-- Affected systems tags will be generated here -->
+                </div>
+            </div>
+            
+            <div class="filter-group">
+                <h3><img src="FA/svg/exchange-alt.svg" class="filter-title-icon icon" alt="Transmission"> Transmission</h3>
+                <div class="tag-container" id="transmission-tags">
+                    <!-- Transmission tags will be generated here -->
+                </div>
+            </div>
+            
+            <div class="filter-group">
+                <h3><img src="FA/svg/microscope.svg" class="filter-title-icon icon" alt="Diagnosis"> Diagnosis</h3>
+                <div class="tag-container" id="diagnosis-tags">
+                    <!-- Diagnosis tags will be generated here -->
+                </div>
+            </div>
+            
+            <div class="filter-group">
+                <h3><img src="FA/svg/pills.svg" class="filter-title-icon icon" alt="Treatment"> Treatment</h3>
+                <div class="tag-container" id="treatment-tags">
+                    <!-- Treatment tags will be generated here -->
+                </div>
+            </div>
+            
+            <div class="filter-group">
+                <h3><img src="FA/svg/shield-alt.svg" class="filter-title-icon icon" alt="Prevention"> Prevention</h3>
+                <div class="tag-container" id="prevention-tags">
+                    <!-- Prevention tags will be generated here -->
+                </div>
+            </div>
+            
+            <div class="selected-tags" id="selected-tags">
+                <div class="selected-tag"><span>No filters selected</span></div>
+            </div>
+            
+            <div class="clear-btn" id="clear-btn">
+                <img src="FA/svg/times.svg" class="icon" alt="Clear"> Clear All Filters
+            </div>
+        </div>
+
+        <div id="fungi-grid" class="fungi-grid">
+            <!-- Fungi cards will be generated here -->
+        </div>
+
+        <div class="detail-tab-container" id="detail-tab">
+            <div class="detail-tab-content">
+                <div class="close-btn" id="close-detail-tab">
+                    <img src="FA/svg/times.svg" class="icon" alt="Close">
+                </div>
+                <div id="detail-content"></div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Mycology Guide &copy; 2025 | Explore and learn about different fungi</p>
+        </footer>
+    </div>
+  
+  <script src="fungiData.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
